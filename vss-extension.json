@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "ServiceFabricTools",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "name": "ServiceFabricTools",
   "scopes": [],
   "description": "Service Fabric Tools",
@@ -24,7 +24,9 @@
     "Sample"
   ],
   "screenshots": [
-    
+	{
+		"path": "static/images/screenshot.png"
+	}
   ],
   "content": {
     "license": {
