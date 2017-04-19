@@ -7,32 +7,25 @@ try
     . "$PSScriptRoot/Update-ServiceFabricApplicationPackageVersions.ps1"
     . "$PSScriptRoot/Get-ServiceFabricApplicationPackageVersions.ps1"
 
-	$DifferentialPackage = Get-VstsInput -Name DifferentialPackage
-	if ($DifferentialPackage -eq 'true')
-	{
+    $packagePath = Get-VstsInput -Name PackagePath -Require
+    
+    $DifferentialPackage = Get-VstsInput -Name DifferentialPackage
+    if ($DifferentialPackage -eq 'true')
+    {
         Import-Module $PSScriptRoot\ps_modules\ServiceFabricHelpers
 
-		$serviceConnectionName = Get-VstsInput -Name ServiceConnectionName -Require
-		$connectedServiceEndpoint = Get-VstsEndpoint -Name $serviceConnectionName -Require
-		$clusterConnectionParameters = @{}
-		Connect-ServiceFabricClusterFromServiceEndpoint -ClusterConnectionParameters $clusterConnectionParameters -ConnectedServiceEndpoint $connectedServiceEndpoint
+        $serviceConnectionName = Get-VstsInput -Name ServiceConnectionName -Require
+        $connectedServiceEndpoint = Get-VstsEndpoint -Name $serviceConnectionName -Require
+        $clusterConnectionParameters = @{}
+        Connect-ServiceFabricClusterFromServiceEndpoint -ClusterConnectionParameters $clusterConnectionParameters -ConnectedServiceEndpoint $connectedServiceEndpoint
 
-		if ((Get-VstsInput -Name ApplicationNameSource -Require) -eq 'PublishParametersFile')
-		{
-			$parametersFilePath = Get-VstsInput -Name PublishParametersFilePath -Require
-			$parametersFile = [xml](Get-Content $parametersFilePath)
-			$applicationName = $parametersFile.Application.Name
-		}
-		else
-		{
-			$applicationName = Get-VstsInput -Name ApplicationName -Require
-		}
-
-        $versions = Get-ServiceFabricApplicationPackageVersions $applicationName			
-	}
-	
-	Update-ServiceFabricApplicationPackageVersions `
-        -PackagePath (Get-VstsInput -Name PackagePath -Require) `
+        $applicationManifestPath = [IO.Path]::Combine($packagePath, 'ApplicationManifest.xml')
+        $applicationManifest = [xml](Get-Content $applicationManifestPath)
+        $versions = Get-ServiceFabricApplicationPackageVersions -ApplicationTypeName $applicationManifest.ApplicationManifest.ApplicationTypeName
+    }
+    
+    Update-ServiceFabricApplicationPackageVersions `
+        -PackagePath $packagePath `
         -ApplicationVersion (Get-VstsInput -Name ApplicationVersion -Require) `
         -ServiceVersion (Get-VstsInput -Name ServiceVersion -Require) `
         -CodePackageHash:((Get-VstsInput -Name CodePackageMode -Require) -eq 'Hash') `

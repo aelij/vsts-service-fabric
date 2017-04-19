@@ -34,7 +34,7 @@
         [hashtable] $DiffPackageVersions,
 
         [Parameter()]
-        [ValidateSet('SHA1','SHA256','SHA384', 'MD5')]
+        [ValidateSet('SHA1','SHA256','SHA384')]
         [string] $HashAlgorithm = 'SHA1',
 
         [Parameter()]
@@ -48,7 +48,7 @@
     function HashDirectory([string] $Path)
     {
         $hasher = [Security.Cryptography.HashAlgorithm]::Create($HashAlgorithm)
-        foreach ($file in (Get-ChildItem $Path -Recurse -Exclude $HashExcludes))
+        foreach ($file in (Get-ChildItem $Path -Recurse -Exclude $HashExcludes -File))
         {
             $buffer = [array]::CreateInstance([byte], 1024)
             $stream = [IO.File]::OpenRead($file.FullName)

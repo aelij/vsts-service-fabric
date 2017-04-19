@@ -1,12 +1,13 @@
 {
   "manifestVersion": 1,
   "id": "ServiceFabricTools",
-  "version": "0.1.6",
-  "name": "ServiceFabricTools",
+  "version": "1.1.0",
+  "name": "Service Fabric Tools",
   "scopes": [],
-  "description": "Service Fabric Tools",
+  "description": "Deployment tools for Service Fabric",
   "publisher": "aelij",
   "galleryFlags": [
+    "Public",
     "Preview"
   ],
   "icons": {
@@ -21,12 +22,12 @@
     "api-version/3.0"
   ],
   "tags": [
-    "Sample"
+    "Service Fabric"
   ],
   "screenshots": [
-	{
-		"path": "static/images/screenshot.png"
-	}
+    {
+        "path": "static/images/ServiceFabricPackageVersioning.png"
+    }
   ],
   "content": {
     "license": {

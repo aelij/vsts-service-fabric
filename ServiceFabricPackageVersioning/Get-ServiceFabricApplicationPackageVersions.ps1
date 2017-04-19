@@ -1,32 +1,32 @@
 function Get-ServiceFabricApplicationPackageVersions
 {
-	[CmdletBinding()]
-	Param
-	(
-		[Parameter(IsMandatory=$true)]
-		[uri] $ApplicationName
-	)
-	
-	$versions = @{}
+    [CmdletBinding()]
+    Param
+    (
+        [Parameter(Mandatory=$true)]
+        [string] $ApplicationTypeName
+    )
+    
+    $versions = @{}
 
-	$application = Get-ServiceFabricApplication -ApplicationName $ApplicationName
-	if ($application)
-	{
-		$serviceTypes = Get-ServiceFabricServiceType -ApplicationTypeName $application.ApplicationTypeName -ApplicationTypeVersion $application.ApplicationTypeVersion
-		foreach ($serviceType in $serviceTypes)
-		{
-			$manifest = [xml](Get-ServiceFabricServiceManifest -ApplicationTypeName $application.ApplicationTypeName -ApplicationTypeVersion $application.ApplicationTypeVersion -ServiceManifestName $serviceType.ServiceManifestName)
-			$packages = $manifest.GetElementsByTagName('CodePackage') + `
+    $applicationType = Get-ServiceFabricApplicationType -ApplicationTypeName $ApplicationTypeName | select -Last 1
+    if ($applicationType)
+    {
+        $serviceTypes = Get-ServiceFabricServiceType -ApplicationTypeName $ApplicationTypeName -ApplicationTypeVersion $applicationType.ApplicationTypeVersion
+        foreach ($serviceType in $serviceTypes)
+        {
+            $manifest = [xml](Get-ServiceFabricServiceManifest -ApplicationTypeName $applicationType.ApplicationTypeName -ApplicationTypeVersion $applicationType.ApplicationTypeVersion -ServiceManifestName $serviceType.ServiceManifestName)
+            $packages = $manifest.GetElementsByTagName('CodePackage') + `
                         $manifest.GetElementsByTagName('ConfigPackage') + `
                         $manifest.GetElementsByTagName('DataPackage')
 
-			foreach ($package in $packages)
+            foreach ($package in $packages)
             {
                 $packageName = $package.GetAttribute('Name')
                 $versions["$($serviceType.ServiceManifestName).$packageName"] = $package.Version
             }
-		}
-	}
-	
-	return $versions
+        }
+    }
+    
+    return $versions
 }
