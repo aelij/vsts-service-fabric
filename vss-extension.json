@@ -1,0 +1,76 @@
+{
+  "manifestVersion": 1,
+  "id": "ServiceFabricTools",
+  "version": "0.1.5",
+  "name": "ServiceFabricTools",
+  "scopes": [],
+  "description": "Service Fabric Tools",
+  "publisher": "aelij",
+  "galleryFlags": [
+    "Preview"
+  ],
+  "icons": {
+    "default": "static/images/logo.png"
+  },
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "demands": [
+    "api-version/3.0"
+  ],
+  "tags": [
+    "Sample"
+  ],
+  "screenshots": [
+    
+  ],
+  "content": {
+    "license": {
+      "path": "LICENSE"
+    },
+    "details": {
+      "path": "README.md"
+    }
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/aelij/vsts-service-fabric"
+    },
+    "support": {
+      "uri": "https://github.com/aelij/vsts-service-fabric"
+    },
+    "issues": {
+      "uri": "https://github.com/aelij/vsts-service-fabric/issues"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/aelij/vsts-service-fabric"
+  },
+  "branding": {
+    "color": "rgb(220, 235, 252)",
+    "theme": "light"
+  },
+  "files": [
+    {
+      "path": "ServiceFabricPackageVersioning"
+    }
+  ],
+  "categories": [
+    "Build and release"
+  ],
+  "contributions": [
+    {
+      "id": "ServiceFabricPackageVersioning",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "type": "ms.vss-distributed-task.task",
+      "properties": {
+        "name": "ServiceFabricPackageVersioning"
+      }
+    }
+  ]
+}
