@@ -26,6 +26,7 @@ try
     
     Update-ServiceFabricApplicationPackageVersions `
         -PackagePath $packagePath `
+		-VersionMode (Get-VstsInput -Name VersionMode -Require) `
         -ApplicationVersion (Get-VstsInput -Name ApplicationVersion -Require) `
         -ServiceVersion (Get-VstsInput -Name ServiceVersion -Require) `
         -CodePackageHash:((Get-VstsInput -Name CodePackageMode -Require) -eq 'Hash') `

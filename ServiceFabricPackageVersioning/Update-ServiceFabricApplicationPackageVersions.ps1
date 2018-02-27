@@ -6,6 +6,9 @@
         [Parameter(Mandatory=$true)]
         [string] $PackagePath,
 
+		[Parameter(Mandatory=$true)]
+        [string] $VersionMode,
+
         [Parameter()]
         [string] $ApplicationVersion,
 
@@ -73,6 +76,11 @@
 
     function GetVersion($Current, $Version)
     {
+		if ($VersionMode -ieq 'Replace')
+		{
+			return $Version
+		}
+
         $separatorIndex = $Current.IndexOf($versionSeparator)
 
         if ($separatorIndex -gt 0)

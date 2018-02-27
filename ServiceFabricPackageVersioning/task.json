@@ -14,7 +14,7 @@
   "demands": [],
   "version": {
     "Major": "1",
-    "Minor": "3",
+    "Minor": "4",
     "Patch": "0"
   },
   "minimumAgentVersion": "1.95.0",
@@ -34,7 +34,18 @@
       "required": true,
       "helpMarkDown": ""
     },
-	{
+    {
+      "name": "VersionMode",
+      "type": "pickList",
+      "label": "Version Mode",
+      "required": true,
+      "defaultValue": "Append",
+      "options": {
+        "Append": "Append",
+        "Replace": "Replace"
+      }
+    },
+    {
       "name": "ApplicationVersion",
       "type": "string",
       "label": "Application Version",
@@ -42,7 +53,7 @@
       "required": true,
       "helpMarkDown": "Appends the specified string to the appication version"
     },
-	{
+    {
       "name": "ServiceVersion",
       "type": "string",
       "label": "Service Version",
@@ -63,7 +74,7 @@
         "Hash": "Hash"
       }
     },
-	{
+    {
       "name": "CodePackageVersion",
       "type": "string",
       "label": "Code Package Version",
@@ -72,7 +83,7 @@
       "helpMarkDown": "",
       "visibleRule": "CodePackageMode = Specify"
     },
-	{
+    {
       "name": "ConfigPackageMode",
       "type": "pickList",
       "label": "Config Package Mode",
@@ -85,7 +96,7 @@
         "Hash": "Hash"
       }
     },
-	{
+    {
       "name": "ConfigPackageVersion",
       "type": "string",
       "label": "Config Package Version",
@@ -94,7 +105,7 @@
       "helpMarkDown": "",
       "visibleRule": "ConfigPackageMode = Specify"
     },
-	{
+    {
       "name": "DataPackageMode",
       "type": "pickList",
       "label": "Data Package Mode",
@@ -107,7 +118,7 @@
         "Hash": "Hash"
       }
     },
-	{
+    {
       "name": "DataPackageVersion",
       "type": "string",
       "label": "Data Package Version",
@@ -116,7 +127,7 @@
       "helpMarkDown": "",
       "visibleRule": "DataPackageMode = Specify"
     },
-	{
+    {
       "name": "DifferentialPackage",
       "type": "boolean",
       "label": "Build a Differential Package",
@@ -124,15 +135,15 @@
       "defaultValue": "true",
       "helpMarkDown": "Differential packages contain only changed code/config/data packages, and so can potentially perform upgrades much faster and with less disruptions to running services. Note that for C# code packages to be binary-compatible, you must [enable deterministic builds](https://gist.github.com/aelij/b20271f4bd0ab1298e49068b388b54ae) and exclude PDBs from hashing (latter is the default)."
     },
-	{
-		"name": "ServiceConnectionName",
-		"type": "connectedService:servicefabric",
-		"label": "Cluster Connection",
-		"defaultValue": "",
-		"required": true,
-		"visibleRule": "DifferentialPackage = true",
-		"helpMarkDown": "Required for differential packages to retrieve the currently deployed version"
-	},
+    {
+      "name": "ServiceConnectionName",
+      "type": "connectedService:servicefabric",
+      "label": "Cluster Connection",
+      "defaultValue": "",
+      "required": true,
+      "visibleRule": "DifferentialPackage = true",
+      "helpMarkDown": "Required for differential packages to retrieve the currently deployed version"
+    },
     {
       "name": "HashAlgorithm",
       "type": "pickList",
@@ -140,8 +151,8 @@
       "defaultValue": "SHA1",
       "required": true,
       "helpMarkDown": "",
-	  "groupName": "advanced",
-	  "options": {
+      "groupName": "advanced",
+      "options": {
         "SHA1": "SHA1",
         "SHA256": "SHA256",
         "SHA384": "SHA384"
@@ -154,7 +165,7 @@
       "defaultValue": "*.pdb",
       "required": true,
       "helpMarkDown": "A semicolon-separated list of files to exclude from hashing.",
-	  "groupName": "advanced"
+      "groupName": "advanced"
     }
   ],
   "execution": {

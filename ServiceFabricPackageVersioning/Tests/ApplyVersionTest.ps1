@@ -26,6 +26,7 @@ try
 
     Update-ServiceFabricApplicationPackageVersions `
         -PackagePath $PackagePath `
+		-VersionMode 'Replace' `
         -ApplicationVersion $ApplicationVersion `
         -ServiceVersion $ServiceVersion `
         -CodePackageHash:(($CodePackageMode) -eq 'Hash') `
