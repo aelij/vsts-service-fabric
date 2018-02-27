@@ -1,6 +1,6 @@
 . "$PSScriptRoot/../Update-ServiceFabricApplicationPackageVersions.ps1"
 
-$path = 'SamplePackagePath'
+$path = '.'
 
 $PackagePath = [IO.Path]::Combine([IO.Path]::GetTempPath(), (New-Guid))
 
@@ -12,7 +12,11 @@ Write-Output "Created a temporary directory $PackagePath"
 
 try
 {
-    $versions = @{'Stateless1.Config'='1.0.0+47f6209e3b8db5e8c49fb59ea415e0cbd8725070'}
+    $versions = @{
+		'Stateless1Pkg.Code.1.1.0'=$true;
+		'Stateless1Pkg.Code.1.0.0'=$true;
+		'Stateless1Pkg.Config.1.0.0'=$true;
+	}
 
     $ApplicationVersion = 'Release-1'
     $ServiceVersion = 'ServiceRelease-1'

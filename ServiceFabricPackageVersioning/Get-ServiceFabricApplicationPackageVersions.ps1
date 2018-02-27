@@ -9,8 +9,8 @@ function Get-ServiceFabricApplicationPackageVersions
     
     $versions = @{}
 
-    $applicationType = Get-ServiceFabricApplicationType -ApplicationTypeName $ApplicationTypeName | select -Last 1
-    if ($applicationType)
+    $applicationTypes = Get-ServiceFabricApplicationType -ApplicationTypeName $ApplicationTypeName
+    foreach ($applicationType in $applicationTypes)
     {
         $serviceTypes = Get-ServiceFabricServiceType -ApplicationTypeName $ApplicationTypeName -ApplicationTypeVersion $applicationType.ApplicationTypeVersion
         foreach ($serviceType in $serviceTypes)
@@ -23,7 +23,7 @@ function Get-ServiceFabricApplicationPackageVersions
             foreach ($package in $packages)
             {
                 $packageName = $package.GetAttribute('Name')
-                $versions["$($serviceType.ServiceManifestName).$packageName"] = $package.Version
+                $versions["$($serviceType.ServiceManifestName).$packageName.$($package.Version)"] = $true
             }
         }
     }

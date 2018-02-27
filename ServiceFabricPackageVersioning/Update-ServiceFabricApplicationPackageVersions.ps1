@@ -87,11 +87,6 @@
 
     function UpdatePackageVersion([string] $PackageType, [xml] $ServiceManifest, [string] $Version, [bool] $UseHash)
     {
-        if (($Version -eq $null -or $Version -eq '') -and -not $UseHash)
-        {
-            return
-        }
-        
         $serviceManifestName = $ServiceManifest.ServiceManifest.GetAttribute('Name')
 
         foreach ($element in $ServiceManifest.GetElementsByTagName($PackageType))
@@ -100,26 +95,37 @@
             $oldVersion = $element.Version
             $removed = ''
 
+            $innerPackagePath = [IO.Path]::Combine($PackagePath, $serviceManifestName, $packageName)
+
             if ($UseHash)
             {
-                $innerPackagePath = [IO.Path]::Combine($PackagePath, $serviceManifestName, $packageName)
                 $currentHash = HashDirectory $innerPackagePath
                 $Version = $currentHash
-
-                if ($DiffPackageVersions -ne $null)
-                {
-                    $previousVersion = $DiffPackageVersions["$serviceManifestname.$packageName"]
-                    if ($previousVersion -ieq "$oldVersion$versionSeparator$currentHash")
-                    {
-                        Remove-item $innerPackagePath -Recurse
-                        $removed = '[REMOVED]'
-                    }
-                }
             }
             
-            $newVersion = GetVersion $oldVersion $Version
-            $element.Version = $newVersion
-            Write-Output ($rowFormatString -f "    $PackageType $packageName", "    $oldVersion", "    $newVersion $removed")
+			if ($Version)
+            {
+				$newVersion = GetVersion $oldVersion $Version
+			}
+			else
+			{
+				$newVersion = $oldVersion
+			}
+
+			if ($DiffPackageVersions -ne $null)
+            {
+                if ($DiffPackageVersions["$serviceManifestName.$packageName.$newVersion"])
+                {
+                    Remove-item $innerPackagePath -Recurse
+                    $removed = '[REMOVED]'
+                }
+            }
+
+			if ($removed -ne '' -or $newVersion -ne $oldVersion)
+			{
+				$element.Version = $newVersion
+				Write-Output ($rowFormatString -f "    $PackageType $packageName", "    $oldVersion", "    $newVersion $removed")
+			}
         }
     }
 
