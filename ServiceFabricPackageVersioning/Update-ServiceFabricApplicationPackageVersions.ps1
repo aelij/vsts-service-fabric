@@ -59,7 +59,7 @@
                 {
                     $readCount = $stream.Read($buffer, 0, $buffer.Length)
                     $tempHash = $hasher.TransformBlock($buffer, 0, $readCount, $null, 0)
-                } while ($readCount > 0)
+                } while ($readCount -gt 0)
             }
             finally
             {
